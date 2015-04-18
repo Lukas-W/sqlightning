@@ -192,7 +192,7 @@ int sqlite3BtreePutData(BtCursor *pCsr, u32 offset, u32 amt, void *z){
 
   node = NODEPTR(mc->mc_pg[mc->mc_top], mc->mc_ki[mc->mc_top]);
   mdb_node_read(mc->mc_txn, node, &data);
-  if (data.mv_size < offset+amt)
+  if (data.mv_size < (size_t)offset+amt)
   	return SQLITE_CORRUPT_BKPT;
 
   if (F_ISSET(node->mn_flags, F_BIGDATA)) {
@@ -680,7 +680,7 @@ int sqlite3BtreeData(BtCursor *pCur, u32 offset, u32 amt, void *pBuf){
   int rc = SQLITE_OK;
   
   mdb_node_read(mc->mc_txn, node, &data);
-  if (offset+amt <= data.mv_size) {
+  if ((size_t)offset+amt <= data.mv_size) {
     memcpy(pBuf, (char *)data.mv_data+offset, amt);
   } else {
     rc = SQLITE_CORRUPT_BKPT;
@@ -1219,7 +1219,7 @@ int sqlite3BtreeKey(BtCursor *pCur, u32 offset, u32 amt, void *pBuf){
   int rc = SQLITE_ERROR;
   if(mc->mc_flags & C_INITIALIZED) {
 	MDB_node *node = NODEPTR(mc->mc_pg[mc->mc_top], mc->mc_ki[mc->mc_top]);
-	if (offset+amt <= NODEKSZ(node)) {
+	if ((size_t)offset+amt <= NODEKSZ(node)) {
       memcpy(pBuf, (char *)NODEKEY(node)+offset, amt);
 	  rc = SQLITE_OK;
     } else {
