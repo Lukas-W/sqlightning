@@ -930,7 +930,7 @@ int sqlite3BtreeMaxPageCount(Btree *p, int mxPage){
   int n;
   LOG("done",0);
   if (mxPage > 0)
-    mdb_env_set_mapsize(p->pBt->env, mxPage * p->pBt->env->me_psize);
+    mdb_env_set_mapsize(p->pBt->env, (size_t)mxPage * (size_t)p->pBt->env->me_psize);
   return p->pBt->env->me_maxpg;
 }
 
