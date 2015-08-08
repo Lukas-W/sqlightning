@@ -689,7 +689,7 @@ int sqlite3BtreeData(BtCursor *pCur, u32 offset, u32 amt, void *pBuf){
   return rc;
 }
 
-static int joinIndexKey(MDB_val *key, MDB_val *data, BtCursor *pCur, u_int32_t amt);
+static int joinIndexKey(MDB_val *key, MDB_val *data, BtCursor *pCur, uint32_t amt);
 
 /*
 ** For the entry that cursor pCur is point to, return as
@@ -1008,7 +1008,7 @@ static void splitIndexKey(MDB_val *key, MDB_val *data)
 	data->mv_data = &aKey[key->mv_size];
 }
 
-static int joinIndexKey(MDB_val *key, MDB_val *data, BtCursor *pCur, u_int32_t amount)
+static int joinIndexKey(MDB_val *key, MDB_val *data, BtCursor *pCur, uint32_t amount)
 {
 	u32 hdrSize;
 	unsigned char *aKey = (unsigned char *)key->mv_data;
